@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dashboard | Nadhif - Responsive Admin Template</title>
+    <!-- <link
+      rel="stylesheet"
+      href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.bootcss.com/bootstrap-table/1.15.4/bootstrap-table.min.css"
+    /> -->
+    <link rel="stylesheet" href="./jquery.min.ui.css" />
+    <link rel="stylesheet" href="./bootstrap.min.css" />
+    <link rel="stylesheet" href="./bootstrap-table.min.css" />
+    <script src="./juquer.min.js"></script>
+    <script src="./jquery.ui.js"></script>
+    <script src="./task_data.js"></script>
+    <script src="./bootstrap-table.min.js"></script>
+    <!-- <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.15.4/bootstrap-table.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.15.4/locale/bootstrap-table-zh-CN.min.js"></script> -->
+  </head>
+  <body>
+    <a href="javascript:;" id="remove"><span class="hidden-480">删除</span></a>
+    <table id="mytab" class="table table-hover"></table>
+    <script>
+      $("#mytab").bootstrapTable({
+        method: "get",
+        url: "./mock_json.json", // 请求路径
+        striped: true, // 是否显示行间隔色
+        pageNumber: 1, // 初始化加载第一页
+        pagination: true, // 是否分页
+        sidePagination: "client", // server:服务器端分页|client：前端分页
+        pageSize: 5, // 单页记录数
+        pageList: [5, 20, 30],
+        // showRefresh : true,// 刷新按钮
+        queryParams: function (params) {
+          // 上传服务器的参数
+          var temp = {
+            name: $("#sname").val(),
+            viewReason: $("#viewReason").val(),
+          };
+          return temp;
+        },
+        columns: [
+          {
+            title: "id",
+            field: "id",
+            visible: false,
+          },
+          {
+            title: "设备编号",
+            field: "deviceId",
+          },
+          {
+            title: "姓名",
+            field: "name",
+          },
+          {
+            title: "性别",
+            field: "sex",
+            formatter: formatSex,
+          },
+          {
+            title: "证件号码",
+            cellStyle: formatTableUnit,
+            formatter: paramsMatter,
+            field: "card",
+          },
+          {
+            title: "联系电话",
+            field: "phone",
+          },
+          {
+            title: "被访姓名",
+            field: "viewPeople",
+          },
+          {
+            title: "来访事由",
+            field: "viewReason",
+            formatter: formatReason,
+          },
+          {
+            title: "来访时间",
+            field: "visitTime",
+
+            formatter: formatTime,
+          },
+          {
+            title: "是否离开",
+            field: "isLeave",
+            formatter: formatIsLeave,
+          },
+          {
+            title: "操作",
+            field: "id",
+            formatter: option,
+          },
+        ],
+      });
+
+      // 定义删除、更新按钮
+      function option(value, row, index) {
+        var htm = "";
+        htm +=
+          '<button id="dupdevice" deviceId="' +
+          value +
+          '" onclick="updDevice(' +
+          value +
+          ')">编辑</button>';
+        return htm;
+      }
+
+      //表格超出宽度鼠标悬停显示td内容
+      function paramsMatter(value, row, index) {
+        var span = document.createElement("span");
+        span.setAttribute("title", value);
+        span.innerHTML = value;
+        return span.outerHTML;
+      }
+      //td宽度以及内容超过宽度隐藏
+      function formatTableUnit(value, row, index) {
+        return {
+          css: {
+            "white-space": "nowrap",
+            "text-overflow": "ellipsis",
+            overflow: "hidden",
+            "max-width": "60px",
+          },
+        };
+      }
+
+      // 格式化性别"sex": 0,是女  "sex": 1,是男
+      function formatSex(value, row, index) {
+        return value == 1 ? "男" : "女";
+      }
+      // 格式化在离厂//"isLeave": 0,是离场，"isLeave": 1,是在场
+      function formatIsLeave(value, row, index) {
+        return value == 1 ? "离厂" : "在厂";
+      }
+
+      // 格式化时间
+      function formatTime(value, row, index) {
+        var date = new Date();
+        date.setTime(value);
+        var month = date.getMonth() + 1;
+        var hours = date.getHours();
+        if (hours < 10) hours = "0" + hours;
+        var minutes = date.getMinutes();
+        if (minutes < 10) minutes = "0" + minutes;
+        var time =
+          date.getFullYear() +
+          "-" +
+          month +
+          "-" +
+          date.getDate() +
+          " " +
+          hours +
+          ":" +
+          minutes;
+        return time;
+      }
+
+      // 格式化访问理由 "viewReason": 1是面试,2是开会，3是拜访客户，4是项目实施
+      function formatReason(value, row, index) {
+        var str;
+        switch (value) {
+          case 1:
+            str = "面试";
+            break;
+          case 2:
+            str = "开会";
+            break;
+          case 3:
+            str = "拜访客户";
+            break;
+          case 4:
+            str = "项目实施";
+            break;
+          default:
+            str = "其他";
+        }
+        return str;
+      }
+
+      // 删除按钮事件
+      $("#remove").on("click", function () {
+        if (!confirm("是否确认删除？")) return;
+        var rows = $("#mytab").bootstrapTable("getSelections"); // 获得要删除的数据
+        if (rows.length == 0) {
+          // rows 主要是为了判断是否选中，下面的else内容才是主要
+          alert("请先选择要删除的记录!");
+          return;
+        } else {
+          var ids = new Array(); // 声明一个数组
+          $(rows).each(function () {
+            // 通过获得别选中的来进行遍历
+            ids.push(this.id); // cid为获得到的整条数据中的一列
+          });
+
+          //后端删除的方法
+          deleteMs(ids);
+        }
+      });
+
+      // 删除访客,删除数据库内容，刷新表格即可删除
+      function deleteMs(ids) {
+        $.ajax({
+          url: basePath + "/caller/dels?ids=" + ids,
+          dataType: "json",
+          type: "get",
+          success: function (data) {
+            if (data > 0) {
+              msg(6, "操作成功");
+              $("#mytab").bootstrapTable("refresh", {
+                url: basePath + "/caller/list",
+              });
+            }
+          },
+        });
+      }
+      // 编辑访客
+      function updDevice(id) {
+        alert("编辑");
+      }
+    </script>
+  </body>
+</html>
