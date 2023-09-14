@@ -1,11 +1,9 @@
 $(document).ready(function () {
   const $taskTable = $("#task-table");
-  const $subTaskTable = $("#sub-task-table");
   const $addTaskBtn = $("#add-task-btn");
-  const $addSubTaskBtn = $("#add-sub-task-btn");
-  // const $configDialog = $("#config-dialog");
-  // const $confirDelDialog = $("#del-reward-dialog");
-
+  const $confirmTaskDelDialog = $("#del-task-dialog");
+  const $taskDialog = $("#task-dialog");
+  const $delTaskBtn = $("#del-task-btn");
   const $inputZhHans = $("#name-zh-hans");
   const $inputZhHant = $("#name-zh-hant");
   const $inputEn = $("#name-en");
@@ -19,8 +17,13 @@ $(document).ready(function () {
   const $addRuleBtn = $("#add-rule-button");
   const $statusSelect = $("#status-select");
 
+  let TASK_ID = "";
+
   $startTimePicker.datepicker();
   $endTimePicker.datepicker();
+
+  $confirmTaskDelDialog.css("display", "none");
+  $taskDialog.css("display", "none");
 
   const inputArr = [
     {
@@ -53,7 +56,34 @@ $(document).ready(function () {
     },
   ];
 
-  function addRuleItem() {
+  const SUB_TASK_LIST = [
+    {
+      subtask_id: 1,
+      name: '{"zh-hans":"备份MPC单元","zh-hant":"備份MPC單元","en":"BackupMPCUnit"}',
+      desc: ' {"zh-hans":"备份MPC单元...","zh-hant":"備份MPC單元...","en":"BackupMPCUnit..."}',
+      type: 1,
+      status: 1,
+      verification_count: 100,
+      completed_count: 50,
+      points: 100,
+      jump_url: "http://abc.com",
+      key: "backup_mpc",
+    },
+    {
+      subtask_id: 1,
+      name: '{"zh-hans":"备份MPC单元","zh-hant":"備份MPC單元","en":"BackupMPCUnit"}',
+      desc: ' {"zh-hans":"备份MPC单元...","zh-hant":"備份MPC單元...","en":"BackupMPCUnit..."}',
+      type: 1,
+      status: 1,
+      verification_count: 100,
+      completed_count: 50,
+      points: 100,
+      jump_url: "http://abc.com",
+      key: "backup_mpc",
+    },
+  ];
+
+  function addTaskRuleItem() {
     // 复制元素 并将input的值清空
     let cloneEle = $(".puzzle-rule:first").clone();
     cloneEle.find("input").each(function (i, d) {
@@ -63,17 +93,46 @@ $(document).ready(function () {
   }
 
   $addRuleBtn.on("click", function () {
-    addRuleItem();
+    addTaskRuleItem();
   });
 
-  // const delBtn = $("#del-config-btn");
-  // $configDialog.css("display", "none");
-  // $confirDelDialog.css("display", "none");
+  $addTaskBtn.on("click", function () {
+    TASK_ID = "";
+    // 清空input
+    inputArr.forEach((d) => {
+      d.dom.val("");
+    });
+    // 状态
+    $statusSelect.val(1);
+    // checkboxs
+    const checkboxs = $(".task-checkbox");
+    checkboxs.each(function (i, d) {
+      $(d).attr("checked", false);
+    });
+    // 规则
+    const ruleDoms = $(".puzzle-rule");
+    if (ruleDoms?.length > 1) {
+      for (let i = 0; i < ruleDoms.length; i++) {
+        if (i > 0) {
+          $(ruleDoms[i]).remove();
+        }
+      }
+    }
+    ruleDoms.each(function (i, d) {
+      const inputs = $(d).find("input");
+      inputs.each(function (ii, dd) {
+        $(dd).val("");
+      });
+    });
+    $taskDialog.dialog({
+      minWidth: "800",
+    });
+  });
 
-  // 获取子任务列表id
+  // 获取子任务列表
   function renderSubTask() {
-    const mock_data = ["1", "2", "3"];
-    mock_data.forEach((d) => {
+    // /taskcenter/get_subtasks
+    SUB_TASK_LIST.forEach((d) => {
       $taskBox.append(`
         <div class='task-box-item'>
           <label>${d}</label>
@@ -90,7 +149,7 @@ $(document).ready(function () {
   window.editTaskEvent = {
     "click .edit-btn": function (e, value, row, index) {
       const jsonParseName = JSON.parse(row.name);
-      //复现
+      // 回显
       inputArr.forEach((d) => {
         if (d.key !== "start_time" && d.key !== "end_time") {
           if (["zh-hans", "zh-hant", "en"].indexOf(d.key) > -1) {
@@ -105,12 +164,11 @@ $(document).ready(function () {
       // 规则
       if (row?.puzzle_rule) {
         const rules = JSON.parse(row.puzzle_rule).rules;
-        console.log("[[rules]]", rules);
         const currLen = $(".puzzle-rule").length;
         if (currLen < rules.length) {
           let gap = rules.length - currLen;
           for (let i = 0; i < gap; i++) {
-            addRuleItem();
+            addTaskRuleItem();
           }
         }
         const mapKeys = ["upper", "lower", "participant_percentage"];
@@ -125,25 +183,32 @@ $(document).ready(function () {
       // 时间
       $startTimePicker.datepicker("setDate", row.start_time);
       $endTimePicker.datepicker("setDate", row.end_time);
-
-      // chcekbox
-
-      // $configDialog.dialog({
-      //   minWidth: "800",
-      // });
+      // chcekbox 子任务
+      const checkboxs = $(".task-checkbox");
+      if (row.subtask_id_list?.length > 0) {
+        for (let i = 0; i < row.subtask_id_list.length; i++) {
+          for (let j = 0; j < checkboxs.length; j++) {
+            if (row.subtask_id_list[i] == $(checkboxs[j]).val()) {
+              $(checkboxs[j]).attr("checked", true);
+            }
+          }
+        }
+      }
+      TASK_ID = row.task_id;
+      $taskDialog.dialog({
+        minWidth: "800",
+      });
     },
   };
 
-  // 删除奖励
+  // 删除任务奖励
   window.delTaskEvent = {
-    "click .del-btn": function (e, value, row, index) {
-      $confirDelDialog.dialog({
+    "click .del-task-btn": function (e, value, row, index) {
+      $confirmTaskDelDialog.dialog({
         minWidth: "300",
       });
-
-      // 删除奖励
-      // /taskcenter/del_reward
-      delBtn.on("click", function () {
+      // /taskcenter/del_task
+      $delTaskBtn.on("click", function () {
         toastr.options = toastrOptions;
         toastr.success("删除成功");
         $rewardConfigTable.bootstrapTable("refresh");
@@ -216,14 +281,18 @@ $(document).ready(function () {
         title: "删除",
         events: delTaskEvent,
         formatter: function () {
-          return ["<button class='edit-btn'>删除</button>"];
+          return ["<button class='del-task-btn'>删除</button>"];
         },
       },
     ],
   });
 
-  function confirmTask(type) {
+  // 新建任务/编辑任务
+  function confirmTask() {
     const params = {};
+    if (TASK_ID) {
+      params.task_id = TASK_ID;
+    }
     // 规则
     const rules = [];
     const mapKeys = ["upper", "lower", "participant_percentage"];
@@ -285,10 +354,72 @@ $(document).ready(function () {
     console.log("[[params]]", params);
   }
 
+  // 提交任务配置方法
   $taskConfirmBtn.on("click", function () {
-    confirmTask("create");
+    confirmTask();
   });
+
+  // ========================
   // 子任务列表
+
+  const $subTaskTable = $("#sub-task-table");
+  const $addSubTaskBtn = $("#add-sub-task-btn");
+
+  window.editSubTaskEvent = {
+    "click .edit-btn": function (e, value, row, index) {
+      const jsonParseName = JSON.parse(row.name);
+      // 回显
+      // inputArr.forEach((d) => {
+      //   if (d.key !== "start_time" && d.key !== "end_time") {
+      //     if (["zh-hans", "zh-hant", "en"].indexOf(d.key) > -1) {
+      //       d.dom.val(jsonParseName[d.key]);
+      //     } else {
+      //       d.dom.val(row[d.key]);
+      //     }
+      //   }
+      // });
+      // 状态
+      // $statusSelect.val(row.status);
+      // 规则
+      // if (row?.puzzle_rule) {
+      //   const rules = JSON.parse(row.puzzle_rule).rules;
+      //   const currLen = $(".puzzle-rule").length;
+      //   if (currLen < rules.length) {
+      //     let gap = rules.length - currLen;
+      //     for (let i = 0; i < gap; i++) {
+      //       addTaskRuleItem();
+      //     }
+      //   }
+      //   const mapKeys = ["upper", "lower", "participant_percentage"];
+      //   const ruleDoms = $(".puzzle-rule");
+      //   ruleDoms.each(function (i, d) {
+      //     const inputs = $(d).find("input");
+      //     inputs.each(function (ii, dd) {
+      //       $(dd).val(rules[i][mapKeys[ii]]);
+      //     });
+      //   });
+      // }
+      // 时间
+      // $startTimePicker.datepicker("setDate", row.start_time);
+      // $endTimePicker.datepicker("setDate", row.end_time);
+      // // chcekbox 子任务
+      // const checkboxs = $(".task-checkbox");
+      // if (row.subtask_id_list?.length > 0) {
+      //   for (let i = 0; i < row.subtask_id_list.length; i++) {
+      //     for (let j = 0; j < checkboxs.length; j++) {
+      //       if (row.subtask_id_list[i] == $(checkboxs[j]).val()) {
+      //         $(checkboxs[j]).attr("checked", true);
+      //       }
+      //     }
+      //   }
+      // }
+      // TASK_ID = row.task_id;
+      // $taskDialog.dialog({
+      //   minWidth: "800",
+      // });
+    },
+  };
+
   $subTaskTable.bootstrapTable({
     method: "get",
     url: "./sub.task.mock.json", // 请求路径
@@ -327,6 +458,27 @@ $(document).ready(function () {
       {
         title: "奖励积分",
         field: "points",
+      },
+      {
+        title: "状态",
+        field: "status",
+        formatter: function (value) {
+          return value == 1 ? "开启" : "关闭";
+        },
+      },
+      {
+        title: "编辑",
+        events: editSubTaskEvent,
+        formatter: function () {
+          return ["<button class='edit-btn'>编辑</button>"];
+        },
+      },
+      {
+        title: "删除",
+        events: delSubTaskEvent,
+        formatter: function () {
+          return ["<button class='del-task-btn'>删除</button>"];
+        },
       },
     ],
   });

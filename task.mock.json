@@ -7,7 +7,7 @@
     "status": 2,
     "show_puzzle_num" : 231,
     "puzzle_rule": "{\"rules\":[{\"upper\":30,\"lower\":20,\"participant_percentage\":0.9},{\"upper\":100,\"lower\":90,\"participant_percentage\":0.1}]}",
-    "subtask_id_list": [1,2,3,4],
+    "subtask_id_list": [1,2],
     "achievement_url": "https://d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg"
   }
 
