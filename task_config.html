@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>jQuery UI Selectmenu - Default functionality</title>
+    <link rel="stylesheet" href="./jquery.min.ui.css" />
+    <link rel="stylesheet" href="./bootstrap.min.css" />
+    <link rel="stylesheet" href="./toast.min.css" />
+    <style>
+      .wrap {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+      }
+      .flex {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
+      #add-task-btn,
+      #add-sub-task-btn {
+        border-radius: 8px;
+        background-color: #0786e7;
+        color: #fff;
+        padding: 8px;
+        border: none;
+        margin-left: 10px;
+      }
+      .flex {
+        display: flex;
+        margin-top: 30px;
+        align-items: center;
+        width: 700px;
+      }
+      .flex-col {
+        display: flex;
+        flex-direction: column;
+        width: 700px;
+      }
+      label {
+        width: 80px;
+      }
+      #taskBox {
+        display: flex;
+        align-items: center;
+      }
+      #taskBox .task-box-item {
+        margin-right: 30px;
+      }
+      #taskBox label {
+        width: auto;
+      }
+      .rule-wrap {
+        margin-bottom: 10px;
+      }
+      .puzzle-rule {
+        display: flex;
+        /* flex-direction: column; */
+      }
+      .puzzle-rule-item {
+        margin-left: 10px;
+        margin-bottom: 10px;
+      }
+      #add-rule-button {
+        margin-top: 30px;
+        width: 100px;
+        margin-left: 200px;
+      }
+    </style>
+    <script src="./juquer.min.js"></script>
+    <script src="./jquery.ui.js"></script>
+    <script src="./toastr.min.js"></script>
+    <script src="./bootstrap-table.min.js"></script>
+    <script src="./task_config.js"></script>
+  </head>
+  <body>
+    <!-- 期数/任务配置 -->
+    <div class="wrap">
+      <div class="flex">
+        <p>期数配置</p>
+        <button id="add-task-btn">添加期数</button>
+      </div>
+      <table id="task-table"></table>
+    </div>
+    <!-- 子任务配置 -->
+    <div class="wrap">
+      <div class="flex">
+        <p>期数配置</p>
+        <button id="add-sub-task-btn">添加任务</button>
+      </div>
+      <table id="sub-task-table"></table>
+    </div>
+
+    <!-- 任务弹窗 -->
+    <div id="add-task-dialog" title="添加期数">
+      <div class="flex-col">
+        <label>奖励名称</label>
+        <div class="name-wrap">
+          <div class="name-item">
+            <label class="mini-label">简体中文</label>
+            <input id="name-zh-hans" />
+          </div>
+          <div class="name-item">
+            <label class="mini-label">繁体中文</label>
+            <input id="name-zh-hant" />
+          </div>
+          <div class="name-item">
+            <label class="mini-label">英文</label>
+            <input id="name-en" />
+          </div>
+        </div>
+      </div>
+      <div class="flex">
+        <label>开始时间</label>
+        <input id="startTime" type="text" />
+      </div>
+      <div class="flex">
+        <label>结束时间</label>
+        <input id="endTime" type="text" />
+      </div>
+      <div class="flex">
+        <label>成就logo</label>
+        <input id="logo" />
+      </div>
+      <div class="flex">
+        <label>任务列表</label>
+        <fieldset>
+          <legend>选择关联子任务ID</legend>
+          <div id="taskBox"></div>
+        </fieldset>
+      </div>
+      <div class="flex">
+        <label>公开拼图数</label>
+        <input id="show-puzzle-count" />
+      </div>
+      <!-- 规则 -->
+      <div class="flex-col">
+        <div class="flex" id="rule-wrap">
+          <label>拼图规则</label>
+          <div class="rule-wrap">
+            <p>每个任务定义规则的人数占比相加必须等于1，如输入0.1,占比为10%</p>
+            <div class="puzzle-rule">
+              <div class="puzzle-rule-item">
+                <span>拼图上限</span>
+                <input />
+              </div>
+              <div class="puzzle-rule-item">
+                <span>拼图下限</span>
+                <input />
+              </div>
+              <div class="puzzle-rule-item">
+                <span>人数占比</span>
+                <input />
+              </div>
+            </div>
+          </div>
+        </div>
+        <button id="add-rule-button">增加规则</button>
+      </div>
+      <select id="status-select" style="width: 200px; margin-top: 30px">
+        <option value="1">正常</option>
+        <option value="2">下架</option>
+      </select>
+
+      <div class="flex" sy>
+        <button id="task-confirm-button">确定</button>
+      </div>
+    </div>
+  </body>
+</html>

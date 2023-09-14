@@ -19,6 +19,7 @@
 $(document).ready(function () {
   const TEST_URL = "";
   const LANG_KEY = "zh-hans";
+  $Select = $("#task-select");
 
   const renderTaskSelect = async () => {
     const data = {
@@ -47,7 +48,7 @@ $(document).ready(function () {
   };
 
   renderTaskSelect();
-  $Select = $("#task-select");
+
   $Select.selectmenu({
     change: function (event, { item }) {
       console.log(item);

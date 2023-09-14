@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>jQuery UI Selectmenu - Default functionality</title>
+    <link rel="stylesheet" href="./jquery.min.ui.css" />
+    <link rel="stylesheet" href="./bootstrap.min.css" />
+    <link rel="stylesheet" href="./toast.min.css" />
+    <style>
+      #add-reward-btn {
+        border: none;
+        outline: none;
+        font-size: 15px;
+        padding: 8px 20px;
+        color: #fff;
+        border-radius: 8px;
+        background-color: #0786e7;
+      }
+      .flex {
+        display: flex;
+        margin-top: 30px;
+        align-items: center;
+        width: 700px;
+      }
+      .flex-col {
+        display: flex;
+        flex-direction: column;
+        width: 700px;
+      }
+      label {
+        width: 80px;
+      }
+      .mini-label {
+        font-size: 12px;
+        font-weight: normal;
+        width: 90px;
+      }
+
+      .name-item {
+        margin-left: 30px;
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+      }
+      input {
+        margin-left: 20px;
+        height: 40px;
+        width: 300px;
+        box-sizing: border-box;
+        border-radius: 8px;
+        padding: 0px 10px;
+      }
+      #confirm-button {
+        border-radius: 8px;
+        background-color: #0786e7;
+        color: #fff;
+        padding: 8px;
+        width: 50px;
+        border: none;
+      }
+      .del-reward-body {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+      }
+      #del-config-btn {
+        width: 100px;
+      }
+    </style>
+    <script src="./juquer.min.js"></script>
+    <script src="./jquery.ui.js"></script>
+    <script src="./toastr.min.js"></script>
+    <script src="./bootstrap-table.min.js"></script>
+    <script src="./reward_config.js"></script>
+  </head>
+  <body>
+    <!-- 奖励配置 -->
+    <button id="add-reward-btn">添加奖励</button>
+    <div id="reward-config-table"></div>
+    <!-- 配置弹窗 -->
+    <div id="config-dialog" title="奖励配置">
+      <div class="flex-col">
+        <label>奖励名称</label>
+        <div class="name-wrap">
+          <div class="name-item">
+            <label class="mini-label">简体中文</label>
+            <input id="name-zh-hans" />
+          </div>
+          <div class="name-item">
+            <label class="mini-label">繁体中文</label>
+            <input id="name-zh-hant" />
+          </div>
+          <div class="name-item">
+            <label class="mini-label">英文</label>
+            <input id="name-en" />
+          </div>
+        </div>
+      </div>
+      <div class="flex">
+        <label>logo</label>
+        <input id="logo" />
+      </div>
+      <div class="flex">
+        <label>真实数量</label>
+        <input id="total-count" />
+      </div>
+      <div class="flex">
+        <label>公布数量</label>
+        <input id="show-count" />
+      </div>
+      <div class="flex">
+        <label>等级限制</label>
+        <input id="level" />
+      </div>
+      <div class="flex">
+        <label>所需拼图数</label>
+        <input id="puzzle" />
+      </div>
+      <select id="status-select">
+        <option value="1">正常</option>
+        <option value="2">下架</option>
+      </select>
+      <div class="flex">
+        <button id="confirm-button">确定</button>
+      </div>
+    </div>
+    <!-- 确定删除配置弹窗 -->
+    <div id="del-reward-dialog" title="删除奖励配置">
+      <div class="del-reward-body">
+        <p>确定删除奖励配置？</p>
+        <button id="del-config-btn">确认</button>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+[
+  {
+    "reward_id": 1,
+    "name": "{\"zh-hans\":\"zksync50u\",\"zh-hant\":\"zksync50u\",\"en\":\"zksync50u\"}",
+    "icon_url": "http://123.com",
+    "status": 2,
+    "claimed_count": 50,
+    "sent_count": 50,
+    "total_count": 100,
+    "show_count": 100,
+    "need_puzzle": 100,
+    "need_level": 1
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.stylelint": true,
+    "source.fixAll": true,
+    "source.fixAll.eslint": true
+  },
+  "stylelint.validate": ["scss"],
+  // "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[scss]": {
+    "editor.formatOnSave": true
+  },
+  "editor.tabSize": 2,
+  "eslint.validate": ["typescript", "typescriptreact", "react"],
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "todohighlight.include": [
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.html",
+    "**/*.php",
+    "**/*.css",
+    "**/*.scss"
+  ],
+  "todohighlight.keywords": ["DOCS"]
+}
