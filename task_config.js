@@ -36,7 +36,7 @@ $(document).ready(function () {
       dom: $inputEn,
     },
     {
-      key: "icon_url",
+      key: "achievement_url",
       dom: $inputLogo,
     },
     {
@@ -53,15 +53,17 @@ $(document).ready(function () {
     },
   ];
 
-  $addRuleBtn.on("click", function () {
+  function addRuleItem() {
     // 复制元素 并将input的值清空
     let cloneEle = $(".puzzle-rule:first").clone();
     cloneEle.find("input").each(function (i, d) {
       $(d).val("");
     });
     cloneEle.appendTo($(".rule-wrap"));
+  }
 
-    // $(".puzzle-rule:first").clone().appendTo($(".rule-wrap"));
+  $addRuleBtn.on("click", function () {
+    addRuleItem();
   });
 
   // const delBtn = $("#del-config-btn");
@@ -90,16 +92,45 @@ $(document).ready(function () {
       const jsonParseName = JSON.parse(row.name);
       //复现
       inputArr.forEach((d) => {
-        if (["zh-hans", "zh-hant", "en"].indexOf(d.key) > -1) {
-          d.dom.val(jsonParseName[d.key]);
-        } else {
-          d.dom.val(row[d.key]);
+        if (d.key !== "start_time" && d.key !== "end_time") {
+          if (["zh-hans", "zh-hant", "en"].indexOf(d.key) > -1) {
+            d.dom.val(jsonParseName[d.key]);
+          } else {
+            d.dom.val(row[d.key]);
+          }
         }
       });
+      // 状态
       $statusSelect.val(row.status);
-      $configDialog.dialog({
-        minWidth: "800",
-      });
+      // 规则
+      if (row?.puzzle_rule) {
+        const rules = JSON.parse(row.puzzle_rule).rules;
+        console.log("[[rules]]", rules);
+        const currLen = $(".puzzle-rule").length;
+        if (currLen < rules.length) {
+          let gap = rules.length - currLen;
+          for (let i = 0; i < gap; i++) {
+            addRuleItem();
+          }
+        }
+        const mapKeys = ["upper", "lower", "participant_percentage"];
+        const ruleDoms = $(".puzzle-rule");
+        ruleDoms.each(function (i, d) {
+          const inputs = $(d).find("input");
+          inputs.each(function (ii, dd) {
+            $(dd).val(rules[i][mapKeys[ii]]);
+          });
+        });
+      }
+      // 时间
+      $startTimePicker.datepicker("setDate", row.start_time);
+      $endTimePicker.datepicker("setDate", row.end_time);
+
+      // chcekbox
+
+      // $configDialog.dialog({
+      //   minWidth: "800",
+      // });
     },
   };
 

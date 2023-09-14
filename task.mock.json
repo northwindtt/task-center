@@ -2,9 +2,11 @@
   {
     "task_id": 1,
     "name": "{\"zh-hans\":\"第一期\",\"zh-hant\":\"第一期\",\"en\":\"Phase1\"}",
-    "start_time": "123",
+    "start_time": 1694679846,
     "end_time": "456",
     "status": 2,
+    "show_puzzle_num" : 231,
+    "puzzle_rule": "{\"rules\":[{\"upper\":30,\"lower\":20,\"participant_percentage\":0.9},{\"upper\":100,\"lower\":90,\"participant_percentage\":0.1}]}",
     "subtask_id_list": [1,2,3,4],
     "achievement_url": "https://d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg"
   }
