@@ -1,0 +1,20 @@
+[
+  {
+    "uid": "1",
+    "address": "士大夫士大",
+    "reward_id": 2,
+    "name": "{\"zh-hans\":\"zksync50ul\",\"zh-hant\":\"zksync50u\",\"en\":\"zksync50u\"}",
+    "status": 2,
+    "claime_time": 1694917976514,
+    "send_time": 1694917976514
+  },
+  {
+    "uid": "2",
+    "address": "士大夫士大2",
+    "reward_id": 3,
+    "name": "{\"zh-hans\":\"zksync50ul\",\"zh-hant\":\"zksync50u\",\"en\":\"zksync50u\"}",
+    "status": 2,
+    "claime_time": 1694917976514,
+    "send_time": 1694917976514
+  }
+]

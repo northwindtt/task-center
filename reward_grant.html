@@ -8,6 +8,12 @@
     <link rel="stylesheet" href="./bootstrap.min.css" />
     <link rel="stylesheet" href="./toast.min.css" />
     <style>
+      .wrap {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+      }
+
       #add-reward-btn {
         border: none;
         outline: none;
@@ -17,20 +23,20 @@
         border-radius: 8px;
         background-color: #0786e7;
       }
+
       .flex {
         display: flex;
-        margin-top: 30px;
-        align-items: center;
-        width: 700px;
       }
+
       .flex-col {
         display: flex;
         flex-direction: column;
-        width: 700px;
       }
+
       label {
         width: 80px;
       }
+
       .mini-label {
         font-size: 12px;
         font-weight: normal;
@@ -43,6 +49,7 @@
         display: flex;
         align-items: center;
       }
+
       input {
         margin-left: 20px;
         height: 40px;
@@ -51,6 +58,14 @@
         border-radius: 8px;
         padding: 0px 10px;
       }
+      input[type="checkbox"] {
+        margin-left: 20px;
+        height: 15px;
+        width: 15px;
+        border-radius: 8px;
+        /* padding: 0px 10px; */
+      }
+
       #confirm-button {
         border-radius: 8px;
         background-color: #0786e7;
@@ -59,12 +74,14 @@
         width: 50px;
         border: none;
       }
+
       .del-reward-body {
         display: flex;
         justify-content: center;
         flex-direction: column;
         align-items: center;
       }
+
       #del-config-btn {
         width: 100px;
       }
@@ -72,65 +89,35 @@
     <script src="./juquer.min.js"></script>
     <script src="./jquery.ui.js"></script>
     <script src="./toastr.min.js"></script>
+    <script src="./reward_grant.js"></script>
     <script src="./bootstrap-table.min.js"></script>
-    <script src="./reward_config.js"></script>
   </head>
+
   <body>
-    <!-- 奖励配置 -->
-    <button id="add-reward-btn">添加奖励</button>
-    <table id="reward-config-table"></table>
-    <!-- 配置弹窗 -->
-    <div id="config-dialog" title="奖励配置">
+    <div class="flex-col">
+      <span>奖励发放</span>
+      <div class="flex" style="margin-top: 30px">
+        <span>奖励筛选：</span>
+        <select id="reward-select"></select>
+
+        <span style="margin-left: 60px">状态：</span>
+        <select id="grant-status-select"></select>
+
+        <button id="searchBtn" style="margin-left: 40px">查询</button>
+      </div>
       <div class="flex-col">
-        <label>奖励名称</label>
-        <div class="name-wrap">
-          <div class="name-item">
-            <label class="mini-label">简体中文</label>
-            <input id="name-zh-hans" />
-          </div>
-          <div class="name-item">
-            <label class="mini-label">繁体中文</label>
-            <input id="name-zh-hant" />
-          </div>
-          <div class="name-item">
-            <label class="mini-label">英文</label>
-            <input id="name-en" />
+        <div class="flex" style="margin-top: 30px; align-items: center">
+          <span id="list-count"></span>
+          <div class="flex" style="flex-grow: 1; justify-content: flex-end">
+            <button id="allGrantBtn" style="margin-right: 20px">
+              全部发出
+            </button>
+            <button id="allRejectBtn" style="margin-right: 40px">
+              全部驳回
+            </button>
           </div>
         </div>
-      </div>
-      <div class="flex">
-        <label>logo</label>
-        <input id="logo" />
-      </div>
-      <div class="flex">
-        <label>真实数量</label>
-        <input id="total-count" />
-      </div>
-      <div class="flex">
-        <label>公布数量</label>
-        <input id="show-count" />
-      </div>
-      <div class="flex">
-        <label>等级限制</label>
-        <input id="level" />
-      </div>
-      <div class="flex">
-        <label>所需拼图数</label>
-        <input id="puzzle" />
-      </div>
-      <select id="status-select">
-        <option value="1">正常</option>
-        <option value="2">下架</option>
-      </select>
-      <div class="flex">
-        <button id="confirm-button">确定</button>
-      </div>
-    </div>
-    <!-- 确定删除配置弹窗 -->
-    <div id="del-reward-dialog" title="删除奖励配置">
-      <div class="del-reward-body">
-        <p>确定删除奖励配置？</p>
-        <button id="del-config-btn">确认</button>
+        <table id="reward-grant-table"></table>
       </div>
     </div>
   </body>

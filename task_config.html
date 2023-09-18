@@ -197,5 +197,71 @@
       </div>
       <table id="sub-task-table"></table>
     </div>
+    <!-- 子任务弹窗 -->
+    <div id="sub-task-dialog" title="添加任务">
+      <div class="flex-col">
+        <label>任务名称</label>
+        <div class="name-wrap">
+          <div class="name-item">
+            <label class="mini-label">简体中文</label>
+            <input id="sub-task-zh-hans" class="input" />
+          </div>
+          <div class="name-item">
+            <label class="mini-label">繁体中文</label>
+            <input id="sub-task-zh-hant" class="input" />
+          </div>
+          <div class="name-item">
+            <label class="mini-label">英文</label>
+            <input id="sub-task-en" class="input" />
+          </div>
+        </div>
+      </div>
+      <div class="flex-col">
+        <label>任务描述</label>
+        <div class="name-wrap">
+          <div class="name-item">
+            <label class="mini-label">简体中文</label>
+            <input id="sub-task-desc-zh-hans" class="input" />
+          </div>
+          <div class="name-item">
+            <label class="mini-label">繁体中文</label>
+            <input id="sub-task-desc-zh-hant" class="input" />
+          </div>
+          <div class="name-item">
+            <label class="mini-label">英文</label>
+            <input id="sub-task-desc-en" class="input" />
+          </div>
+        </div>
+      </div>
+      <div class="name-item">
+        <label class="mini-label">奖励分数</label>
+        <input id="sub-task-points" class="input" />
+      </div>
+      <div class="name-item">
+        <label class="mini-label">跳转URL</label>
+        <input id="sub-task-url" class="input" />
+      </div>
+      <div class="name-item">
+        <label class="mini-label">任务key</label>
+        <input id="sub-task-key" class="input" />
+      </div>
+      <select id="sbu-task-type-select" style="width: 200px; margin-top: 30px">
+        <option value="0">基础</option>
+        <option value="1">进阶</option>
+      </select>
+
+      <div class="flex">
+        <button id="sub-task-confirm-button" class="confirm-button">
+          确定
+        </button>
+      </div>
+    </div>
+    <!-- 确定删除子任务弹窗 -->
+    <div id="del-sub-task-dialog" title="删除子任务">
+      <div class="del-task-body">
+        <p>确定删除子任务？</p>
+        <button id="del-sub-task-btn">确认</button>
+      </div>
+    </div>
   </body>
 </html>

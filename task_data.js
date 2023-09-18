@@ -19,7 +19,7 @@
 $(document).ready(function () {
   const TEST_URL = "";
   const LANG_KEY = "zh-hans";
-  $Select = $("#task-select");
+  const $Select = $("#task-select");
 
   const renderTaskSelect = async () => {
     const data = {
@@ -54,8 +54,6 @@ $(document).ready(function () {
       console.log(item);
     },
   });
-
-  const renderSubTaskTableData = () => {};
 
   const $taslTable = $("#sub-task-table");
 
@@ -104,12 +102,12 @@ $(document).ready(function () {
   }
 
   // 游乐场
-  const $rewardTable = $("reward-table");
+  const $enjoyTable = $("#enjoy-table");
 
-  $rewardTable.bootstrapTable({
+  $enjoyTable.bootstrapTable({
     method: "get",
     // /taskcenter/get_rewards
-    url: "./mock_json.json", // 请求路径
+    url: "reward.config.mock.json", // 请求路径
     striped: true, // 是否显示行间隔色
     pageNumber: 1, // 初始化加载第一页
     pagination: true, // 是否分页

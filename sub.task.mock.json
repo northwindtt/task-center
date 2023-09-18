@@ -2,9 +2,9 @@
   {
     "subtask_id": 1,
     "name": "{\"zh-hans\":\"备份MPC单元\",\"zh-hant\":\"備份MPC單元\",\"en\":\"BackupMPCUnit\"}",
-    "desc": " {\"zh-hans\":\"备份MPC单元...\",\"zh-hant\":\"備份MPC單元...\",\"en\":\"BackupMPCUnit...\"}",
-    "type": 1,
-    "status": 1,
+    "desc": " {\"zh-hans\":\"备份MPC单元1111...\",\"zh-hant\":\"備份MPC單元...\",\"en\":\"BackupMPCUnit...\"}",
+    "type": 0,
+    "status": 2,
     "verification_count": 100,
     "completed_count": 50,
     "points": 100,
@@ -14,7 +14,7 @@
   {
     "subtask_id": 2,
     "name": "{\"zh-hans\":\"备份MPC单元\",\"zh-hant\":\"備份MPC單元\",\"en\":\"BackupMPCUnit\"}",
-    "desc": " {\"zh-hans\":\"备份MPC单元...\",\"zh-hant\":\"備份MPC單元...\",\"en\":\"BackupMPCUnit...\"}",
+    "desc": " {\"zh-hans\":\"备份MPC单元2222...\",\"zh-hant\":\"備份MPC單元...\",\"en\":\"BackupMPCUnit...\"}",
     "type": 1,
     "status": 2,
     "verification_count": 100,
